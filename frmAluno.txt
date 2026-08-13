@@ -1,0 +1,167 @@
+Private Sub LimparFormulario()
+    With frmAluno
+        .txtNome = ""
+        .txtDataNascimento = ""
+        .txtGenero = ""
+        .txtTelefone = ""
+        .txtTelefoneEmergencial = ""
+        .txtCEP = ""
+        .txtLogradouro = ""
+        .txtBairro = ""
+        .txtCidade = ""
+        .txtFoto = ""
+        .imgFoto.Picture = LoadPicture("C:\Users\Edmar\Documents\Academia Prime Fitness\images\Logo\Prime_Fitness_Logo.bmp")
+        .txtCodigo = ""
+    End With
+End Sub
+
+
+Private Sub cmdCalendario_Click()
+    Set FormDestino = Me
+    Set ControleDestino = Me.txtDataNascimento
+    frmCalendario.Show
+End Sub
+
+Private Sub cmdExcluir_Click()
+    ExcluirAluno
+    LimparFormulario
+    CarregarListaAlunos
+End Sub
+
+
+Private Sub cmdFiltrar_Click()
+    With frmAluno
+        .txtNome.Enabled = True
+        .txtDataNascimento.Enabled = False
+        .txtGenero.Enabled = False
+        .txtTelefone.Enabled = False
+        .txtTelefoneEmergencial.Enabled = False
+        .txtCEP.Enabled = False
+        .txtLogradouro.Enabled = False
+        .txtBairro.Enabled = False
+        .txtCidade.Enabled = False
+        .txtCodigo.Enabled = True
+        .txtCodigo.Visible = True
+        .Label11.Visible = True
+        .txtCodigo.SetFocus
+    End With
+    CarregarListaAlunos
+End Sub
+
+Private Sub cmdFoto_Click()
+
+    Dim fd As FileDialog
+
+    Set fd = Application.FileDialog(msoFileDialogFilePicker)
+
+    With fd
+
+        .Title = "Selecione uma foto"
+
+        .Filters.Clear
+        .Filters.Add "Imagens", "*.jpg;*.jpeg;*.png;*.bmp"
+
+        If .Show = -1 Then
+
+            txtFoto.Value = .SelectedItems(1)
+
+            frmAluno.imgFoto.Picture = LoadPicture(txtFoto.Value)
+
+        End If
+
+    End With
+
+End Sub
+
+Private Sub cmdNovo_Click()
+    LimparFormulario
+    lngLinha = 0
+    txtCodigo.Enabled = False
+    txtCodigo.Visible = False
+    Label11.Visible = False
+    txtDataAva.SetFocus
+
+End Sub
+
+
+Private Sub cmdSair_Click()
+    frmPrincipal.Show
+    Unload Me
+End Sub
+
+
+Private Sub cmdSalvar_Click()
+    If lngLinha = 0 Then
+        lngLinha = wsCadAluno.Cells(wsCadAluno.Rows.Count, 1).End(xlUp).Row
+        'If lngLinha < 2 Then
+            'lngLinha = lngLinha + 1
+        'End If
+        lngLinha = lngLinha + 1
+    End If
+    CadastrarAluno lngLinha
+    MsgBox "Aluno(a): " & wsCadAluno.Cells(lngLinha, 2).Value & vbCrLf & _
+        "Código: " & wsCadAluno.Cells(lngLinha, 1).Value, _
+        vbInformation + vbOKOnly, _
+        "Sucesso"
+    LimparFormulario
+    lngLinha = 0
+    CarregarListaAlunos
+End Sub
+
+
+
+Private Sub Label11_Click()
+
+End Sub
+
+Private Sub lstAlunos_Click()
+    Dim Codigo As Long
+
+    Codigo = Me.lstAlunos.List(Me.lstAlunos.ListIndex, 0)
+
+    CarregarAluno Codigo
+End Sub
+
+Private Sub txtCodigo_AfterUpdate()
+
+    If txtCodigo = "" Then Exit Sub
+
+    PesquisarAlunoPorCodigo CLng(txtCodigo)
+
+End Sub
+
+
+Private Sub txtDataNascimento_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    Set FormDestino = Me
+    Set ControleDestino = Me.txtDataNascimento
+
+    frmCalendario.Show
+End Sub
+
+Private Sub UserForm_Activate()
+    With frmAluno
+        txtCodigo.Enabled = False
+        txtCodigo.Visible = False
+        Label11.Visible = False
+        txtFoto.Visible = False
+    End With
+    CarregarListaAlunos
+End Sub
+
+Private Sub UserForm_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    With frmAluno
+        .txtNome.Enabled = True
+        .txtDataNascimento.Enabled = True
+        .txtGenero.Enabled = True
+        .txtTelefone.Enabled = True
+        .txtTelefoneEmergencial.Enabled = True
+        .txtCEP.Enabled = True
+        .txtLogradouro.Enabled = True
+        .txtBairro.Enabled = True
+        .txtCidade.Enabled = True
+    End With
+End Sub
+
+Private Sub UserForm_Initialize()
+    CarregarListaAlunos
+End Sub
