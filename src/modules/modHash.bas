@@ -318,7 +318,7 @@ Public Function GerarSHA256(ByVal texto As String) As String
     GerarSHA256 = resultado
 
 
-Saida:
+saida:
 
     '------------------------------------------------------
     ' Libera os recursos da API
@@ -343,7 +343,7 @@ TrataErro:
 
     GerarSHA256 = vbNullString
 
-    Resume Saida
+    Resume saida
 
 End Function
 
