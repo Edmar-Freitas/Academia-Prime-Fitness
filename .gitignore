@@ -1,0 +1,19 @@
+# Arquivos temporários do Excel
+~$*.xls*
+*.tmp
+
+# Arquivos temporários
+*.bak
+
+# Logs
+*.log
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos temporários do VBA
+*.exd
+
+# Fotos pessoais
+Imagens/Fotos/
